@@ -1,0 +1,80 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "siteName": {
+            "value": "shaithal-armdemo-app"
+        },
+        "serverName": {
+            "value": "shaithal-mysql-armdemo"
+        },
+        "location": {
+            "value": "eastus"
+        },
+        "serverEdition": {
+            "value": "Burstable"
+        },
+        "vCores": {
+            "value": 1
+        },
+        "storageSizeGB": {
+            "value": 20
+        },
+        "haEnabled": {
+            "value": "Disabled"
+        },
+        "tags": {
+            "value": {}
+        },
+        "firewallRules": {
+            "value": {
+                "rules": [
+                    {
+                        "name" : "AllowMyIP",
+                        "startIPAddress" : "59.97.43.172",
+                        "endIPAddress" : "59.97.43.172"
+                    }
+                ]
+            }
+        },
+        "publicNetworkAccess": {
+            "value": "Enabled"
+        },
+        "backupRetentionDays": {
+            "value": 7
+        },
+        "geoRedundantBackup": {
+            "value": "Disabled"
+        },
+        "availabilityZone": {
+            "value": ""
+        },
+        "infrastructureEncryption": {
+            "value": "Disabled"
+        },
+        "vmName": {
+            "value": "Standard_B1ms"
+        },
+        "storageIops": {
+            "value": 360
+        },
+        "storageAutogrow": {
+            "value": "Enabled"
+        },
+        "standbyAvailabilityZone": {
+            "value": ""
+        },
+        "administratorLogin": {
+            "value": "sra25"
+        },
+        "administratorLoginPassword": {
+            "value": "Aithal25"
+        },
+        "version": {
+            "value": "5.7"
+        },
+        "databaseName":{
+            "value": "sampleDB"
+        }
+    }
+}

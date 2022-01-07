@@ -1,0 +1,205 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "siteName": {
+            "type": "string",
+            "defaultValue": "[concat('MySQL-', uniqueString(resourceGroup().name))]",
+            "metadata": {
+              "description": "The unique name of your Web Site."
+            }
+        },
+        "hostingPlanName": {
+            "type": "string",
+            "defaultValue": "[concat('hpn-',  uniqueString(resourceGroup().id))]"
+        },
+        "administratorLogin": {
+            "type": "string"
+        },
+        "administratorLoginPassword": {
+            "type": "securestring"
+        },
+        "location": {
+            "type": "string"
+        },
+        "serverName": {
+            "type": "string"
+        },
+        "serverEdition": {
+            "type": "string"
+        },
+        "vCores": {
+            "type": "int",
+            "defaultValue": 4
+        },
+        "storageSizeGB": {
+            "type": "int"
+        },
+        "haEnabled": {
+            "type": "string",
+            "defaultValue": "Disabled"
+        },
+        "availabilityZone": {
+            "type": "string"
+        },
+        "standbyAvailabilityZone": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": {}
+        },
+        "firewallRules": {
+            "type": "object",
+            "defaultValue": {}
+        },
+        "backupRetentionDays": {
+            "type": "int"
+        },
+        "geoRedundantBackup": {
+            "type": "string"
+        },
+        "vmName": {
+            "type": "string",
+            "defaultValue": "Standard_B1ms"
+        },
+        "publicNetworkAccess": {
+            "type": "string",
+            "metadata": {
+                "description": "Value should be either Enabled or Disabled"
+            }
+        },
+        "storageIops": {
+            "type": "int"
+        },
+        "storageAutogrow": {
+            "type": "string",
+            "defaultValue": "Enabled"
+        },
+        "infrastructureEncryption": {
+            "type": "string"
+        },
+        "databaseName": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "api": "2021-05-01"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2021-02-01",
+            "name": "[parameters('hostingPlanName')]",
+            "location": "[parameters('location')]",
+            "sku": {
+              "Tier": "Standard",
+              "Name": "S1"
+            },
+            "kind": "linux",
+            "properties": {
+              "name": "[parameters('hostingPlanName')]",
+              "workerSizeId": "1",
+              "reserved": true,
+              "numberOfWorkers": "1"
+            }
+        },
+        {
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2021-02-01",
+            "name": "[parameters('siteName')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+              "[parameters('hostingPlanName')]"
+            ],
+            "properties": {
+              "siteConfig": {
+                "linuxFxVersion": "php|8.0",
+                "appSettings": [
+                    {
+                        "name": "DB_HOST",
+                        "value": "[concat(parameters('serverName'),'.mysql.database.azure.com')]"
+                    },
+                    {
+                        "name": "DB_DATABASE",
+                        "value": "[parameters('databaseName')]"
+                    },
+                    {
+                        "name": "DB_USERNAME",
+                        "value": "[parameters('administratorLogin')]"
+                    },
+                    {
+                        "name": "DB_PASSWORD",
+                        "value": "[parameters('administratorLoginPassword')]"
+                    }
+                  ]
+              },
+              "name": "[parameters('siteName')]",
+              "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('hostingPlanName'))]"
+            }
+        },
+        {
+            "apiVersion": "[variables('api')]",
+            "type": "Microsoft.DBforMySQL/flexibleServers",
+            "location": "[parameters('location')]",
+            "name": "[parameters('serverName')]",
+            "properties": {
+                "version": "[parameters('version')]",
+                "administratorLogin": "[parameters('administratorLogin')]",
+                "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+                "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
+                "Storage": {
+                    "StorageSizeGB": "[parameters('storageSizeGB')]",
+                    "Iops": "[parameters('storageIops')]",
+                    "Autogrow": "[parameters('storageAutogrow')]"
+                },
+                "Backup": {
+                    "backupRetentionDays": "[parameters('backupRetentionDays')]",
+                    "geoRedundantBackup": "[parameters('geoRedundantBackup')]"
+                },
+                "availabilityZone": "[parameters('availabilityZone')]",
+                "highAvailability": {
+                    "mode": "[parameters('haEnabled')]",
+                    "standbyAvailabilityZone": "[parameters('standbyAvailabilityZone')]"
+                },
+                "dataencryption": {
+                    "infrastructureEncryption": "[parameters('infrastructureEncryption')]"
+                }
+            },
+            "sku": {
+                "name": "[parameters('vmName')]",
+                "tier": "[parameters('serverEdition')]",
+                "capacity": "[parameters('vCores')]"
+            },
+            "tags": "[parameters('tags')]"            
+        },
+        {
+            "type": "Microsoft.DBforMySQL/flexibleServers/firewallRules",
+            "name": "[concat(parameters('serverName'),'/','AllowAzureIPs')]",
+            "apiVersion": "[variables('api')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('serverName'))]"
+            ],
+            "properties": {
+                "StartIpAddress": "0.0.0.0",
+                "EndIpAddress": "255.255.255.255"
+            }
+        },
+        {
+            "type": "Microsoft.DBforMySQL/flexibleServers/databases",
+            "apiVersion": "[variables('api')]",
+            "name": "[concat(parameters('serverName'),'/',parameters('databaseName'))]",
+            "dependsOn": [
+                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('serverName'))]"
+            ],
+            "properties": {
+              "charset": "utf8",
+              "collation": "utf8_general_ci"
+            }
+        }
+    ]
+}
