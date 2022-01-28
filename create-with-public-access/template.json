@@ -16,14 +16,14 @@
         },
         "serverEdition": {
             "type": "string",
-            "defaultValue": "Burstable",
+            "defaultValue": "GeneralPurpose",
             "metadata": {
-                "description": "The tier of the particular SKU, e.g. Burstable, GeneralPurpose, MemoryOptimized."
+                "description": "The tier of the particular SKU, e.g. Burstable, GeneralPurpose, MemoryOptimized. High Availability is not available for Burstable sku."
             }
         },
         "skuName": {
             "type": "string",
-            "defaultValue": "Standard_B1ms",
+            "defaultValue": "Standard_D2ds_v4",
             "metadata": {
                 "description": "The name of the sku, e.g. Standard_D32ds_v4."
             }
@@ -126,13 +126,36 @@
             }
         },
         {
-            "type": "Microsoft.DBforMySQL/flexibleServers/firewallRules",
-            "name": "[concat(parameters('serverName'),'/',variables('firewallRules')[0].name)]",
-            "apiVersion": "[variables('api')]",
+            "condition": "[greater(length(variables('firewallRules')), 0)]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-08-01",
+            "name": "[concat('firewallRules-', copyIndex())]",
+            "copy": {
+                "count": "[if(greater(length(variables('firewallRules')), 0), length(variables('firewallRules')), 1)]",
+                "mode": "Serial",
+                "name": "firewallRulesIterator"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('serverName'))]"
+            ],
             "properties": {
-                "StartIpAddress": "[variables('firewallRules')[0].startIPAddress]",
-                "EndIpAddress": "[variables('firewallRules')[0].endIPAddress]"
-            } 
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.DBforMySQL/flexibleServers/firewallRules",
+                            "name": "[concat(parameters('serverName'),'/',variables('firewallRules')[copyIndex()].name)]",
+                            "apiVersion": "[variables('api')]",
+                            "properties": {
+                                "StartIpAddress": "[variables('firewallRules')[copyIndex()].startIPAddress]",
+                                "EndIpAddress": "[variables('firewallRules')[copyIndex()].endIPAddress]"
+                            }
+                        }
+                    ]
+                }
+            }
         }
     ]
 }

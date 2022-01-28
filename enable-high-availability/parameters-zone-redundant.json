@@ -15,22 +15,22 @@
             "value": "shaithal-mysql-armdemo"
         },
         "serverEdition": {
-            "value": "Burstable"
+            "value": "GeneralPurpose"
         },
         "skuName": {
-            "value": "Standard_B1ms"
+            "value": "Standard_D2ds_v4"
         },
         "storageSizeGB": {
-            "value": 32
+            "value": 64
         },
         "storageIops": {
-            "value": 360
+            "value": 1000
         },
         "storageAutogrow": {
             "value": "Enabled"
         },
         "availabilityZone": {
-            "value": ""
+            "value": "1"
         },
         "version": {
             "value": "5.7"
@@ -39,10 +39,10 @@
             "value": {}
         },
         "haEnabled": {
-            "value": "Disabled"
+            "value": "ZoneRedundant"
         },
         "standbyAvailabilityZone": {
-            "value": ""
+            "value": "3"
         },
         "firewallRules": {
             "value": {
@@ -60,17 +60,6 @@
         },
         "geoRedundantBackup": {
             "value": "Disabled"
-        },   
-        "serverParameters": {
-            "value": {
-                "parameters": [
-                    {
-                        "name" : "require_secure_transport",
-                        "value" : "OFF",
-                        "source" : "user-override"
-                    }
-                ]
-            }
         }
     }
 }

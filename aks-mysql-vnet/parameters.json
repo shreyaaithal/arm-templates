@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "clusterName": {
+            "value": "shaithal-akscluster"
+        },
+        "dnsPrefix": {
+            "value": "shaithal-akscluster"
+        },
+        "agentCount": {
+            "value": 1
+        },
+        "agentVMSize": {
+            "value": "Standard_D2s_v3"
+        },
+        "linuxAdminUsername": {
+            "value": "Aithal25"
+        },
+        "sshRSAPublicKey": {
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDkP++C+Rc21n3XVb9XplXiiq0MhSjeqd5FAbd7pO59WwVoBM1NVPzNcdTTdtZLAD7iZXy/304QrG0IRyYB/xUS7EEbkJmucBfyi/Cy2Hngzx1rJGSQd6zQWgKZck2rgcmaHWJTcigkLw4SOy+apaVBzkpuyhI2ZgzIavMdYSLng5lVaWWY2+53NzYmh4J59dXE+1ruLc7GwElpVQ6ZGBw8ErGjiFyNz3CRQsi+OdmN4gl+0L6NWdyDy1bPBGDWUYaEKWUrpXH5eqFtMDQnLTLa+jEuWxo4mABcPPrcCcE32n+2XcJt8HEof1pGrRv51dqlFieF88MtD/hkGIq4Xy6iBbvpjnv2ViV92VpHwC8K9rdQz6pWL0uW6zAOaavlY0uOoSFYTf9vMZLBXF012Fy/6Ji9846/XR/Riq86EMiq1Kk9GxlBt7jAwhRisEh/wpuGt64i2Odq8zkgG/CFYkYF0Yh+EdD6ZqD6kqj4g/64v4I6Idp3bvItReOAV6D/Aa7iJ8oT4d/C5WX024LnYkc5sLjiF4NVBC1rFoeZgCWTXocvKAAgYyLCAQr92E73eoMBRT3CwnbQR23Cxrv+HrCflrqpCoNMuqWkKxKu1bEdyjjwDStieCqnYW924znCMefaRg/4EwVpJcKmupUIV+Yztz1Q5jnqMWxFOReH29vmmw== shreya@cc-8f9644-757dd96945-dd4cm"
+        },
+        "location": {
+            "value": "eastus"
+        }
+    }
+}
