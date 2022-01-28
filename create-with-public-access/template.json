@@ -16,14 +16,14 @@
         },
         "serverEdition": {
             "type": "string",
-            "defaultValue": "GeneralPurpose",
+            "defaultValue": "Burstable",
             "metadata": {
-                "description": "The tier of the particular SKU, e.g. Burstable, GeneralPurpose, MemoryOptimized. High Availability is not available for Burstable sku."
+                "description": "The tier of the particular SKU, e.g. Burstable, GeneralPurpose, MemoryOptimized. High Availability is available only for GeneralPurpose and MemoryOptimized sku."
             }
         },
         "skuName": {
             "type": "string",
-            "defaultValue": "Standard_D2ds_v4",
+            "defaultValue": "Standard_B1ms",
             "metadata": {
                 "description": "The name of the sku, e.g. Standard_D32ds_v4."
             }
@@ -73,9 +73,6 @@
         },
         "geoRedundantBackup": {
             "type": "string"
-        },
-        "serverParameters": {
-            "type": "object"
         }
     },
     "variables": {
@@ -112,18 +109,6 @@
                 } 
             },
             "tags": "[parameters('tags')]"  
-        },
-        {
-            "type": "Microsoft.DBforMySQL/flexibleServers/configurations",
-            "apiVersion": "[variables('api')]",
-            "name": "[concat(parameters('serverName'), '/', parameters('serverParameters').parameters[0].name)]",
-            "dependsOn": [
-                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('serverName'))]"
-            ],
-            "properties": {
-              "value": "[parameters('serverParameters').parameters[0].value]",
-              "source": "[parameters('serverParameters').parameters[0].source]"
-            }
         },
         {
             "condition": "[greater(length(variables('firewallRules')), 0)]",
