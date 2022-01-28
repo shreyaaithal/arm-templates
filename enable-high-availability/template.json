@@ -114,6 +114,9 @@
             "type": "Microsoft.DBforMySQL/flexibleServers/firewallRules",
             "name": "[concat(parameters('serverName'),'/',variables('firewallRules')[0].name)]",
             "apiVersion": "[variables('api')]",
+            "dependsOn": [
+                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('serverName'))]"
+            ],
             "properties": {
                 "StartIpAddress": "[variables('firewallRules')[0].startIPAddress]",
                 "EndIpAddress": "[variables('firewallRules')[0].endIPAddress]"

@@ -5,55 +5,26 @@
         "siteName": {
             "value": "shaithal-armdemo-app"
         },
-        "serverName": {
-            "value": "shaithal-mysql-armdemo"
+        "administratorLogin": {
+            "value": "sra25"
+        },
+        "administratorLoginPassword": {
+            "value": "Aithal25"
         },
         "location": {
             "value": "eastus"
         },
+        "serverName": {
+            "value": "shaithal-mysql-armdemo"
+        },
         "serverEdition": {
             "value": "Burstable"
         },
-        "vCores": {
-            "value": 1
+        "skuName": {
+            "value": "Standard_B1ms"
         },
         "storageSizeGB": {
-            "value": 20
-        },
-        "haEnabled": {
-            "value": "Disabled"
-        },
-        "tags": {
-            "value": {}
-        },
-        "firewallRules": {
-            "value": {
-                "rules": [
-                    {
-                        "name" : "AllowMyIP",
-                        "startIPAddress" : "59.97.43.172",
-                        "endIPAddress" : "59.97.43.172"
-                    }
-                ]
-            }
-        },
-        "publicNetworkAccess": {
-            "value": "Enabled"
-        },
-        "backupRetentionDays": {
-            "value": 7
-        },
-        "geoRedundantBackup": {
-            "value": "Disabled"
-        },
-        "availabilityZone": {
-            "value": ""
-        },
-        "infrastructureEncryption": {
-            "value": "Disabled"
-        },
-        "vmName": {
-            "value": "Standard_B1ms"
+            "value": 32
         },
         "storageIops": {
             "value": 360
@@ -61,17 +32,37 @@
         "storageAutogrow": {
             "value": "Enabled"
         },
-        "standbyAvailabilityZone": {
+        "availabilityZone": {
             "value": ""
-        },
-        "administratorLogin": {
-            "value": "sra25"
-        },
-        "administratorLoginPassword": {
-            "value": "Aithal25"
         },
         "version": {
             "value": "5.7"
+        },
+        "tags": {
+            "value": {}
+        },
+        "haEnabled": {
+            "value": "Disabled"
+        },
+        "standbyAvailabilityZone": {
+            "value": ""
+        },
+        "firewallRules": {
+            "value": {
+                "rules": [
+                    {
+                        "name" : "AllowMyIP",
+                        "startIPAddress" : "59.97.41.110",
+                        "endIPAddress" : "59.97.41.110"
+                    }
+                ]
+            }
+        },
+        "backupRetentionDays": {
+            "value": 7
+        },
+        "geoRedundantBackup": {
+            "value": "Disabled"
         },
         "databaseName":{
             "value": "sampleDB"

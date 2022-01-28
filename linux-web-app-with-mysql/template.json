@@ -26,24 +26,34 @@
             "type": "string"
         },
         "serverEdition": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": "Burstable",
+            "metadata": {
+                "description": "The tier of the particular SKU, e.g. Burstable, GeneralPurpose, MemoryOptimized. High Availability is available only for GeneralPurpose and MemoryOptimized sku."
+            }
         },
-        "vCores": {
-            "type": "int",
-            "defaultValue": 4
+        "skuName": {
+            "type": "string",
+            "defaultValue": "Standard_B1ms",
+            "metadata": {
+                "description": "The name of the sku, e.g. Standard_D32ds_v4."
+            }
         },
         "storageSizeGB": {
             "type": "int"
         },
-        "haEnabled": {
+        "storageIops": {
+            "type": "int"
+        },
+        "storageAutogrow": {
             "type": "string",
-            "defaultValue": "Disabled"
+            "defaultValue": "Enabled"
         },
         "availabilityZone": {
-            "type": "string"
-        },
-        "standbyAvailabilityZone": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "Availability Zone information of the server. (Leave blank for No Preference)."
+            }
         },
         "version": {
             "type": "string"
@@ -51,6 +61,19 @@
         "tags": {
             "type": "object",
             "defaultValue": {}
+        },
+        "haEnabled": {
+            "type": "string",
+            "defaultValue": "Disabled",
+            "metadata": {
+                "description": "High availability mode for a server : Disabled, SameZone, or ZoneRedundant"
+            }
+        },
+        "standbyAvailabilityZone": {
+            "type": "string",
+            "metadata": {
+                "description": "Availability zone of the standby server."
+            }
         },
         "firewallRules": {
             "type": "object",
@@ -60,26 +83,6 @@
             "type": "int"
         },
         "geoRedundantBackup": {
-            "type": "string"
-        },
-        "vmName": {
-            "type": "string",
-            "defaultValue": "Standard_B1ms"
-        },
-        "publicNetworkAccess": {
-            "type": "string",
-            "metadata": {
-                "description": "Value should be either Enabled or Disabled"
-            }
-        },
-        "storageIops": {
-            "type": "int"
-        },
-        "storageAutogrow": {
-            "type": "string",
-            "defaultValue": "Enabled"
-        },
-        "infrastructureEncryption": {
             "type": "string"
         },
         "databaseName": {
@@ -142,39 +145,34 @@
             }
         },
         {
-            "apiVersion": "[variables('api')]",
             "type": "Microsoft.DBforMySQL/flexibleServers",
+            "apiVersion": "[variables('api')]",
             "location": "[parameters('location')]",
             "name": "[parameters('serverName')]",
+            "sku": {
+                "name": "[parameters('skuName')]",
+                "tier": "[parameters('serverEdition')]"
+            },
             "properties": {
                 "version": "[parameters('version')]",
                 "administratorLogin": "[parameters('administratorLogin')]",
                 "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
-                "publicNetworkAccess": "[parameters('publicNetworkAccess')]",
-                "Storage": {
-                    "StorageSizeGB": "[parameters('storageSizeGB')]",
-                    "Iops": "[parameters('storageIops')]",
-                    "Autogrow": "[parameters('storageAutogrow')]"
-                },
-                "Backup": {
-                    "backupRetentionDays": "[parameters('backupRetentionDays')]",
-                    "geoRedundantBackup": "[parameters('geoRedundantBackup')]"
-                },
                 "availabilityZone": "[parameters('availabilityZone')]",
                 "highAvailability": {
                     "mode": "[parameters('haEnabled')]",
                     "standbyAvailabilityZone": "[parameters('standbyAvailabilityZone')]"
                 },
-                "dataencryption": {
-                    "infrastructureEncryption": "[parameters('infrastructureEncryption')]"
-                }
+                "Storage": {
+                    "storageSizeGB": "[parameters('storageSizeGB')]",
+                    "iops": "[parameters('storageIops')]",
+                    "autogrow": "[parameters('storageAutogrow')]"
+                },
+                "Backup": {
+                    "backupRetentionDays": "[parameters('backupRetentionDays')]",
+                    "geoRedundantBackup": "[parameters('geoRedundantBackup')]"
+                } 
             },
-            "sku": {
-                "name": "[parameters('vmName')]",
-                "tier": "[parameters('serverEdition')]",
-                "capacity": "[parameters('vCores')]"
-            },
-            "tags": "[parameters('tags')]"            
+            "tags": "[parameters('tags')]"  
         },
         {
             "type": "Microsoft.DBforMySQL/flexibleServers/firewallRules",
