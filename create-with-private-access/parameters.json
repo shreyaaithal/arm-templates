@@ -12,7 +12,7 @@
             "value": "eastus"
         },
         "serverName": {
-            "value": "shaithal-mysql-armdemo3"
+            "value": "shaithal-mysql-armdemo4"
         },
         "serverEdition": {
             "value": "Burstable"
@@ -44,27 +44,23 @@
         "standbyAvailabilityZone": {
             "value": ""
         },
-        "firewallRules": {
-            "value": {
-                "rules": [
-                    {
-                        "name" : "AllowMyIP",
-                        "startIPAddress" : "59.97.41.110",
-                        "endIPAddress" : "59.97.41.110"
-                    },
-                    {
-                        "name" : "AllowNewIP",
-                        "startIPAddress" : "59.97.41.20",
-                        "endIPAddress" : "59.97.41.20"
-                    }
-                ]
-            }
-        },
         "backupRetentionDays": {
             "value": 7
         },
         "geoRedundantBackup": {
             "value": "Disabled"
+        },
+        "vnetName": {
+            "value": "shaithal-armvnet"
+        },
+        "subnetName": {
+            "value": "shaithal-armsubnet"
+        },
+        "vnetAddressPrefix": {
+            "value": "155.5.0.0/24"
+        },
+        "subnetPrefix": {
+            "value": "155.5.0.0/28"
         },
         "databaseName":{
             "value": "sampleDB"

@@ -64,9 +64,25 @@
                 "description": "Availability zone of the standby server."
             }
         },
-        "firewallRules": {
-            "type": "object",
-            "defaultValue": {}
+        "vnetName": {
+            "type": "string",
+            "defaultValue": "azure_mysql_vnet",
+            "metadata": { "description": "Virtual Network Name" }
+        },
+        "subnetName": {
+            "type": "string",
+            "defaultValue": "azure_mysql_subnet",
+            "metadata": { "description": "Subnet Name"}
+        },
+        "vnetAddressPrefix": {
+            "type": "string",
+            "defaultValue": "10.0.0.0/16",
+            "metadata": { "description": "Virtual Network Address Prefix" }
+          },
+        "subnetPrefix": {
+            "type": "string",
+            "defaultValue": "10.0.0.0/24",
+            "metadata": { "description": "Subnet Address Prefix" }
         },
         "backupRetentionDays": {
             "type": "int"
@@ -79,15 +95,49 @@
         }
     },
     "variables": {
-        "api": "2021-05-01-preview",
-        "firewallRules": "[parameters('firewallRules').rules]"
+        "api": "2021-05-01-preview"
     },
     "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2021-05-01",
+            "name": "[parameters('vnetName')]",
+            "location": "[parameters('location')]",
+            "properties": {
+              "addressSpace": {
+                "addressPrefixes": [
+                  "[parameters('vnetAddressPrefix')]"
+                ]
+              }
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2021-05-01",
+            "name": "[concat(parameters('vnetName'),'/',parameters('subnetName'))]",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', parameters('vnetName'))]"
+            ],
+            "properties": {
+                "addressPrefix": "[parameters('subnetPrefix')]",
+                "delegations": [
+                {
+                    "name": "MySQLflexibleServers",
+                    "properties": {
+                        "serviceName": "Microsoft.DBforMySQL/flexibleServers"
+                    }
+                }
+                ]
+            }    
+        },
         {
             "type": "Microsoft.DBforMySQL/flexibleServers",
             "apiVersion": "[variables('api')]",
             "location": "[parameters('location')]",
             "name": "[parameters('serverName')]",
+            "dependsOn": [
+                "[resourceID('Microsoft.Network/virtualNetworks/subnets/', parameters('vnetName'), parameters('subnetName'))]"
+            ],
             "sku": {
                 "name": "[parameters('skuName')]",
                 "tier": "[parameters('serverEdition')]"
@@ -106,44 +156,15 @@
                     "iops": "[parameters('storageIops')]",
                     "autogrow": "[parameters('storageAutogrow')]"
                 },
+                "network": {
+                    "delegatedSubnetResourceId": "[resourceID('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]"
+                },
                 "Backup": {
                     "backupRetentionDays": "[parameters('backupRetentionDays')]",
                     "geoRedundantBackup": "[parameters('geoRedundantBackup')]"
                 } 
             },
             "tags": "[parameters('tags')]"  
-        },
-        {
-            "condition": "[greater(length(variables('firewallRules')), 0)]",
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2019-08-01",
-            "name": "[concat('firewallRules-', copyIndex())]",
-            "copy": {
-                "count": "[if(greater(length(variables('firewallRules')), 0), length(variables('firewallRules')), 1)]",
-                "mode": "Serial",
-                "name": "firewallRulesIterator"
-            },
-            "dependsOn": [
-                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('serverName'))]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "template": {
-                    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
-                    "contentVersion": "1.0.0.0",
-                    "resources": [
-                        {
-                            "type": "Microsoft.DBforMySQL/flexibleServers/firewallRules",
-                            "name": "[concat(parameters('serverName'),'/',variables('firewallRules')[copyIndex()].name)]",
-                            "apiVersion": "[variables('api')]",
-                            "properties": {
-                                "StartIpAddress": "[variables('firewallRules')[copyIndex()].startIPAddress]",
-                                "EndIpAddress": "[variables('firewallRules')[copyIndex()].endIPAddress]"
-                            }
-                        }
-                    ]
-                }
-            }
         },
         {
             "type": "Microsoft.DBforMySQL/flexibleServers/databases",
@@ -157,5 +178,6 @@
               "collation": "utf8_general_ci"
             }
         }
+        
     ]
 }
