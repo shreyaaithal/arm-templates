@@ -12,7 +12,7 @@
             "value": "eastus"
         },
         "serverName": {
-            "value": "shaithal-mysql-armdemo3"
+            "value": "shaithal-mysql-armdemo"
         },
         "serverEdition": {
             "value": "Burstable"
@@ -60,18 +60,6 @@
         },
         "geoRedundantBackup": {
             "value": "Disabled"
-        },
-        "customWindowEnabled": {
-            "value": "Enabled"
-        },
-        "dayOfWeek": {
-            "value": 0
-        },
-        "startHour": {
-            "value": 0
-        },
-        "startMinute": {
-            "value": 0
         }
     }
 }

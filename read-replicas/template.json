@@ -74,32 +74,12 @@
         "geoRedundantBackup": {
             "type": "string"
         },
-        "customWindowEnabled": {
-            "type": "string",
-            "defaultValue": "Enabled",
-            "metadata": {
-                "description": "Indicates whether custom maintenance window Enabled or Disabled (system maintained)."
-            }
-        },
-        "dayOfWeek": {
+        "numberOfReplicas": {
             "type": "int",
-            "defaultValue": 0,
+            "defaultValue": 1,
+            "allowedValues": [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ],
             "metadata": {
-                "description": "Indicates day of the week for custom maintenance window."
-            }
-        },
-        "startHour": {
-            "type": "int",
-            "defaultValue": 0,
-            "metadata": {
-                "description": "Indicates start hour for custom maintenance window."
-            }
-        },
-        "startMinute": {
-            "type": "int",
-            "defaultValue": 0,
-            "metadata": {
-                "description": "Indicates start minute for custom maintenance window."
+                "description": "Number of read replicas to be provisioned."
             }
         }
     },
@@ -134,16 +114,53 @@
                 "Backup": {
                     "backupRetentionDays": "[parameters('backupRetentionDays')]",
                     "geoRedundantBackup": "[parameters('geoRedundantBackup')]"
-                },
-                "maintenanceWindow": {
-                    "customWindow": "[parameters('customWindowEnabled')]",
-                    "dayOfWeek": "[parameters('dayOfWeek')]",
-                    "startHour": "[parameters('startHour')]",
-                    "startMinute": "[parameters('startMinute')]"
-                }
-                
+                } 
             },
             "tags": "[parameters('tags')]"  
+        },
+        {
+            "type": "Microsoft.DBforMySQL/flexibleServers/firewallRules",
+            "apiVersion": "[variables('api')]",
+            "name": "[concat(parameters('serverName'),'/',variables('firewallRules')[0].name)]",
+            "dependsOn": [
+                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('serverName'))]"
+            ],
+            "properties": {
+                "StartIpAddress": "[variables('firewallRules')[0].startIPAddress]",
+                "EndIpAddress": "[variables('firewallRules')[0].endIPAddress]"
+            } 
+        },
+        {
+            "condition": "[greater(parameters('numberOfReplicas'), 0)]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2019-08-01",
+            "name": "[concat('replica-', copyIndex())]",
+            "copy": {
+                "count": "parameters('numberOfReplicas')",
+                "mode": "Serial",
+                "name": "ReplicasIterator"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('serverName'))]"
+            ],
+            "properties": {
+                "mode": "Incremental",
+                "template": {
+                    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+                    "contentVersion": "1.0.0.0",
+                    "resources": [
+                        {
+                            "type": "Microsoft.DBforMySQL/flexibleServers/configurations",
+                            "name": "[concat(parameters('serverName'),'/',variables('serverParameters')[copyIndex()].name)]",
+                            "apiVersion": "[variables('api')]",
+                            "properties": {
+                                "value": "[variables('serverParameters')[copyIndex()].value]",
+                                "source": "[variables('serverParameters')[copyIndex()].source]"
+                            }
+                        }
+                    ]
+                }
+            }
         }
     ]
 }
