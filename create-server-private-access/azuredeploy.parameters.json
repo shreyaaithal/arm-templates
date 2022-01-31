@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "administratorLogin": {
-            "value": "myadmin"
+            "value": "GEN-UNIQUE"
         },
         "administratorLoginPassword": {
             "value": "GEN-PASSWORD"
@@ -12,25 +12,25 @@
             "value": "eastus"
         },
         "serverName": {
-            "value": "mysql-armdemo"
+            "value": "GEN-UNIQUE"
         },
         "serverEdition": {
-            "value": "GeneralPurpose"
+            "value": "Burstable"
         },
         "skuName": {
-            "value": "Standard_D2ds_v4"
+            "value": "Standard_B1ms"
         },
         "storageSizeGB": {
-            "value": 64
+            "value": 32
         },
         "storageIops": {
-            "value": 1000
+            "value": 360
         },
         "storageAutogrow": {
             "value": "Enabled"
         },
         "availabilityZone": {
-            "value": "1"
+            "value": ""
         },
         "version": {
             "value": "5.7"
@@ -39,27 +39,31 @@
             "value": {}
         },
         "haEnabled": {
-            "value": "ZoneRedundant"
+            "value": "Disabled"
         },
         "standbyAvailabilityZone": {
-            "value": "3"
-        },
-        "firewallRules": {
-            "value": {
-                "rules": [
-                    {
-                        "name" : "AllowMyIP",
-                        "startIPAddress" : "59.97.41.110",
-                        "endIPAddress" : "59.97.41.110"
-                    }
-                ]
-            }
+            "value": ""
         },
         "backupRetentionDays": {
             "value": 7
         },
         "geoRedundantBackup": {
             "value": "Disabled"
+        },
+        "vnetName": {
+            "value": "GEN-VNET-NAME"
+        },
+        "subnetName": {
+            "value": "GEN-VNET-SUBNET1-NAME"
+        },
+        "vnetAddressPrefix": {
+            "value": "155.5.0.0/24"
+        },
+        "subnetPrefix": {
+            "value": "155.5.0.0/28"
+        },
+        "databaseName":{
+            "value": "sampleDB"
         }
     }
 }

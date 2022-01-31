@@ -2,11 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "siteName": {
-            "value": "webapp-armdemo"
-        },
         "administratorLogin": {
-            "value": "myadmin"
+            "value": "GEN-UNIQUE"
         },
         "administratorLoginPassword": {
             "value": "GEN-PASSWORD"
@@ -15,7 +12,7 @@
             "value": "eastus"
         },
         "serverName": {
-            "value": "mysql-armdemo"
+            "value": "GEN-UNIQUE"
         },
         "serverEdition": {
             "value": "Burstable"
@@ -63,9 +60,32 @@
         },
         "geoRedundantBackup": {
             "value": "Disabled"
-        },
-        "databaseName":{
-            "value": "sampleDB"
+        },   
+        "serverParameters": {
+            "value": {
+                "parameters": [
+                    {
+                        "name" : "audit_log_enabled",
+                        "value" : "ON",
+                        "source" : "user-override"
+                    },
+                    {
+                        "name" : "slow_query_log",
+                        "value" : "ON",
+                        "source" : "user-override"
+                    },
+                    {
+                        "name" : "long_query_time",
+                        "value" : "15",
+                        "source" : "user-override"
+                    },
+                    {
+                        "name" : "log_slow_admin_statements",
+                        "value" : "ON",
+                        "source" : "user-override"
+                    }
+                ]
+            }
         }
     }
 }

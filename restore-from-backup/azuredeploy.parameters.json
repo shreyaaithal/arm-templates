@@ -6,13 +6,13 @@
             "value": "eastus"
         },
         "serverName": {
-            "value": "mysql-armdemo"
+            "value": "GEN-UNIQUE"
         },
         "restorePointInTime": {
             "value": "2022-01-24T20:13:31Z"
         },
         "sourceServerName": {
-            "value": "mysql-sourceserver"
+            "value": "GEN-UNIQUE"
         },
         "tags": {
             "value": {}

@@ -2,8 +2,11 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "siteName": {
+            "value": "GEN-UNIQUE"
+        },
         "administratorLogin": {
-            "value": "myadmin"
+            "value": "GEN-UNIQUE"
         },
         "administratorLoginPassword": {
             "value": "GEN-PASSWORD"
@@ -12,7 +15,7 @@
             "value": "eastus"
         },
         "serverName": {
-            "value": "mysql-armdemo"
+            "value": "GEN-UNIQUE"
         },
         "serverEdition": {
             "value": "Burstable"
@@ -44,23 +47,22 @@
         "standbyAvailabilityZone": {
             "value": ""
         },
+        "firewallRules": {
+            "value": {
+                "rules": [
+                    {
+                        "name" : "AllowMyIP",
+                        "startIPAddress" : "59.97.41.110",
+                        "endIPAddress" : "59.97.41.110"
+                    }
+                ]
+            }
+        },
         "backupRetentionDays": {
             "value": 7
         },
         "geoRedundantBackup": {
             "value": "Disabled"
-        },
-        "vnetName": {
-            "value": "mysql-armvnet"
-        },
-        "subnetName": {
-            "value": "mysql-armsubnet"
-        },
-        "vnetAddressPrefix": {
-            "value": "155.5.0.0/24"
-        },
-        "subnetPrefix": {
-            "value": "155.5.0.0/28"
         },
         "databaseName":{
             "value": "sampleDB"

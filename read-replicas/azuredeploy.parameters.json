@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "administratorLogin": {
-            "value": "myadmin"
+            "value": "GEN-UNIQUE"
         },
         "administratorLoginPassword": {
             "value": "GEN-PASSWORD"
@@ -11,20 +11,20 @@
         "location": {
             "value": "eastus"
         },
-        "serverName": {
-            "value": "mysql-armdemo"
+        "primaryServerName": {
+            "value": "GEN-UNIQUE"
         },
         "serverEdition": {
-            "value": "Burstable"
+            "value": "GeneralPurpose"
         },
         "skuName": {
-            "value": "Standard_B1ms"
+            "value": "Standard_D2ds_v4"
         },
         "storageSizeGB": {
-            "value": 32
+            "value": 64
         },
         "storageIops": {
-            "value": 360
+            "value": 1000
         },
         "storageAutogrow": {
             "value": "Enabled"
@@ -61,16 +61,7 @@
         "geoRedundantBackup": {
             "value": "Disabled"
         },
-        "customWindowEnabled": {
-            "value": "Enabled"
-        },
-        "dayOfWeek": {
-            "value": 1
-        },
-        "startHour": {
-            "value": 0
-        },
-        "startMinute": {
+        "numberOfReplicas": {
             "value": 0
         }
     }

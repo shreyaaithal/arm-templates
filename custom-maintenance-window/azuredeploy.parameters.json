@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "administratorLogin": {
-            "value": "myadmin"
+            "value": "GEN-UNIQUE"
         },
         "administratorLoginPassword": {
             "value": "GEN-PASSWORD"
@@ -12,7 +12,7 @@
             "value": "eastus"
         },
         "serverName": {
-            "value": "mysql-armdemo"
+            "value": "GEN-UNIQUE"
         },
         "serverEdition": {
             "value": "Burstable"
@@ -60,32 +60,18 @@
         },
         "geoRedundantBackup": {
             "value": "Disabled"
-        },   
-        "serverParameters": {
-            "value": {
-                "parameters": [
-                    {
-                        "name" : "audit_log_enabled",
-                        "value" : "ON",
-                        "source" : "user-override"
-                    },
-                    {
-                        "name" : "slow_query_log",
-                        "value" : "ON",
-                        "source" : "user-override"
-                    },
-                    {
-                        "name" : "long_query_time",
-                        "value" : "15",
-                        "source" : "user-override"
-                    },
-                    {
-                        "name" : "log_slow_admin_statements",
-                        "value" : "ON",
-                        "source" : "user-override"
-                    }
-                ]
-            }
+        },
+        "customWindowEnabled": {
+            "value": "Enabled"
+        },
+        "dayOfWeek": {
+            "value": 1
+        },
+        "startHour": {
+            "value": 0
+        },
+        "startMinute": {
+            "value": 0
         }
     }
 }

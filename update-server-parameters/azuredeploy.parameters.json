@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "administratorLogin": {
-            "value": "myadmin"
+            "value": "GEN-UNIQUE"
         },
         "administratorLoginPassword": {
             "value": "GEN-PASSWORD"
@@ -12,7 +12,7 @@
             "value": "eastus"
         },
         "serverName": {
-            "value": "mysql-armdemo"
+            "value": "GEN-UNIQUE"
         },
         "serverEdition": {
             "value": "Burstable"
@@ -51,11 +51,6 @@
                         "name" : "AllowMyIP",
                         "startIPAddress" : "59.97.41.110",
                         "endIPAddress" : "59.97.41.110"
-                    },
-                    {
-                        "name" : "AllowNewIP",
-                        "startIPAddress" : "59.97.41.20",
-                        "endIPAddress" : "59.97.41.20"
                     }
                 ]
             }
@@ -65,9 +60,17 @@
         },
         "geoRedundantBackup": {
             "value": "Disabled"
-        },
-        "databaseName":{
-            "value": "sampleDB"
+        },   
+        "serverParameters": {
+            "value": {
+                "parameters": [
+                    {
+                        "name" : "require_secure_transport",
+                        "value" : "OFF",
+                        "source" : "user-override"
+                    }
+                ]
+            }
         }
     }
 }
