@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
@@ -29,7 +29,7 @@
         }
     },
     "variables": {
-        "api": "2021-05-01-preview"
+        "api": "2021-05-01"
     },
     "resources": [
         {

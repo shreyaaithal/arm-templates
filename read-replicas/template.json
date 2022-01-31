@@ -1,5 +1,5 @@
 {
-    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "$schema": "http://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "administratorLogin": {
@@ -11,19 +11,19 @@
         "location": {
             "type": "string"
         },
-        "serverName": {
+        "primaryServerName": {
             "type": "string"
         },
         "serverEdition": {
             "type": "string",
-            "defaultValue": "Burstable",
+            "defaultValue": "GeneralPurpose",
             "metadata": {
-                "description": "The tier of the particular SKU, e.g. Burstable, GeneralPurpose, MemoryOptimized."
+                "description": "The tier of the particular SKU, e.g. Burstable, GeneralPurpose, MemoryOptimized. Replication is supported only for GeneralPurpose and MemoryOptimized tiers."
             }
         },
         "skuName": {
             "type": "string",
-            "defaultValue": "Standard_B1ms",
+            "defaultValue": "Standard_D2ds_v4",
             "metadata": {
                 "description": "The name of the sku, e.g. Standard_D32ds_v4."
             }
@@ -92,7 +92,7 @@
             "type": "Microsoft.DBforMySQL/flexibleServers",
             "apiVersion": "[variables('api')]",
             "location": "[parameters('location')]",
-            "name": "[parameters('serverName')]",
+            "name": "[parameters('primaryServerName')]",
             "sku": {
                 "name": "[parameters('skuName')]",
                 "tier": "[parameters('serverEdition')]"
@@ -121,9 +121,9 @@
         {
             "type": "Microsoft.DBforMySQL/flexibleServers/firewallRules",
             "apiVersion": "[variables('api')]",
-            "name": "[concat(parameters('serverName'),'/',variables('firewallRules')[0].name)]",
+            "name": "[concat(parameters('primaryServerName'),'/',variables('firewallRules')[0].name)]",
             "dependsOn": [
-                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('serverName'))]"
+                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('primaryServerName'))]"
             ],
             "properties": {
                 "StartIpAddress": "[variables('firewallRules')[0].startIPAddress]",
@@ -134,14 +134,14 @@
             "condition": "[greater(parameters('numberOfReplicas'), 0)]",
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-08-01",
-            "name": "[concat('replica-', copyIndex())]",
+            "name": "[concat('mysqlReplica-',add(copyIndex(),1))]",
             "copy": {
-                "count": "parameters('numberOfReplicas')",
+                "count": "[parameters('numberOfReplicas')]",
                 "mode": "Serial",
                 "name": "ReplicasIterator"
             },
             "dependsOn": [
-                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('serverName'))]"
+                "[concat('Microsoft.DBforMySQL/flexibleServers/', parameters('primaryServerName'))]"
             ],
             "properties": {
                 "mode": "Incremental",
@@ -150,12 +150,13 @@
                     "contentVersion": "1.0.0.0",
                     "resources": [
                         {
-                            "type": "Microsoft.DBforMySQL/flexibleServers/configurations",
-                            "name": "[concat(parameters('serverName'),'/',variables('serverParameters')[copyIndex()].name)]",
+                            "type": "Microsoft.DBforMySQL/flexibleServers",
                             "apiVersion": "[variables('api')]",
+                            "location": "[parameters('location')]",
+                            "name": "[concat(parameters('primaryServerName'),'-replica',add(copyIndex(),1))]",
                             "properties": {
-                                "value": "[variables('serverParameters')[copyIndex()].value]",
-                                "source": "[variables('serverParameters')[copyIndex()].source]"
+                                "createMode": "Replica",
+                                "sourceServerResourceId": "[resourceID('Microsoft.DBforMySQL/flexibleServers',parameters('primaryServerName'))]"
                             }
                         }
                     ]

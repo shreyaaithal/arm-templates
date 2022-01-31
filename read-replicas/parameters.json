@@ -1,30 +1,30 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
         "administratorLogin": {
             "value": "myadmin"
         },
         "administratorLoginPassword": {
-            "value": "mypassword"
+            "value": "GEN-PASSWORD"
         },
         "location": {
             "value": "eastus"
         },
-        "serverName": {
+        "primaryServerName": {
             "value": "mysql-armdemo"
         },
         "serverEdition": {
-            "value": "Burstable"
+            "value": "GeneralPurpose"
         },
         "skuName": {
-            "value": "Standard_B1ms"
+            "value": "Standard_D2ds_v4"
         },
         "storageSizeGB": {
-            "value": 32
+            "value": 64
         },
         "storageIops": {
-            "value": 360
+            "value": 1000
         },
         "storageAutogrow": {
             "value": "Enabled"
@@ -60,6 +60,9 @@
         },
         "geoRedundantBackup": {
             "value": "Disabled"
+        },
+        "numberOfReplicas": {
+            "value": 0
         }
     }
 }
