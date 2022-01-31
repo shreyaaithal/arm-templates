@@ -6,13 +6,13 @@
             "value": "eastus"
         },
         "serverName": {
-            "value": "shaithal-mysql-armdemo"
+            "value": "mysql-armdemo"
         },
         "restorePointInTime": {
             "value": "2022-01-24T20:13:31Z"
         },
         "sourceServerName": {
-            "value": "shaithal-javamysql"
+            "value": "mysql-sourceserver"
         },
         "tags": {
             "value": {}

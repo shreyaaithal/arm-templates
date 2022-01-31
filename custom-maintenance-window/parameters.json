@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "administratorLogin": {
-            "value": "sra25"
+            "value": "myadmin"
         },
         "administratorLoginPassword": {
-            "value": "Aithal25"
+            "value": "mypassword"
         },
         "location": {
             "value": "eastus"
         },
         "serverName": {
-            "value": "shaithal-mysql-armdemo3"
+            "value": "mysql-armdemo"
         },
         "serverEdition": {
             "value": "Burstable"
@@ -65,7 +65,7 @@
             "value": "Enabled"
         },
         "dayOfWeek": {
-            "value": 0
+            "value": 1
         },
         "startHour": {
             "value": 0

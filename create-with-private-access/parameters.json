@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "administratorLogin": {
-            "value": "sra25"
+            "value": "myadmin"
         },
         "administratorLoginPassword": {
-            "value": "Aithal25"
+            "value": "mypassword"
         },
         "location": {
             "value": "eastus"
         },
         "serverName": {
-            "value": "shaithal-mysql-armdemo4"
+            "value": "mysql-armdemo"
         },
         "serverEdition": {
             "value": "Burstable"
@@ -51,10 +51,10 @@
             "value": "Disabled"
         },
         "vnetName": {
-            "value": "shaithal-armvnet"
+            "value": "mysql-armvnet"
         },
         "subnetName": {
-            "value": "shaithal-armsubnet"
+            "value": "mysql-armsubnet"
         },
         "vnetAddressPrefix": {
             "value": "155.5.0.0/24"

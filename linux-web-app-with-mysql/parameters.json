@@ -3,19 +3,19 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "siteName": {
-            "value": "shaithal-armdemo-app"
+            "value": "mysql-armdemo-app"
         },
         "administratorLogin": {
-            "value": "sra25"
+            "value": "myadmin"
         },
         "administratorLoginPassword": {
-            "value": "Aithal25"
+            "value": "mypassword"
         },
         "location": {
             "value": "eastus"
         },
         "serverName": {
-            "value": "shaithal-mysql-armdemo"
+            "value": "mysql-armdemo"
         },
         "serverEdition": {
             "value": "Burstable"
